@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+  icons_launcher: ^2.1.7
   msix: ^3.16.7
 
 # For information on the generic Dart part of this file, see the
@@ -76,7 +77,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
 msix_config:
   display_name: FlipNMatch
   msix_version: 1.0.0.0
