@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:math' as math;
-
-import 'package:confetti/confetti.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
+import 'package:flipnmatch/pages/start.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,23 +30,33 @@ class _HomePageState extends State<HomePage> {
   int? tapValIndex;
   bool toggle = false;
   bool match = false;
-  bool start = false;
+  bool start = true;
 
   int matchCount = 0;
+
+  int countdown = 0;
+
+  int score = 0;
+
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     // init card
     initCard();
+    startGame();
   }
 
   initCard() {
+    log('init card');
     // init list size
     total = (chars.length) * 4;
     // fill with default value
     cards.clear();
     cardsFlipable.clear();
+    cardControllers.clear();
+    List.generate(total, (i) => cardControllers.add(FlipCardController()));
     List.generate(total, (i) => cards.add(''));
     List.generate(total, (i) => cardsFlipable.add(true));
     // fill card item
@@ -59,67 +67,76 @@ class _HomePageState extends State<HomePage> {
     }
     // shuffle
     cards.shuffle();
-    // init card controller
-    cardControllers.clear();
-    List.generate(total, (i) => cardControllers.add(FlipCardController()));
     // init
     toggle = false;
     match = false;
     tapVal = null;
     tapValIndex = null;
     score = 0;
-    countdown = 30;
     matchCount = 0;
   }
 
-  late Timer timer;
-  late int countdown;
-
-  int score = 0;
-
   startGame() {
+    log('start game');
+
     timer = Timer.periodic(const Duration(seconds: 1), (value) {
       setState(() {
-        countdown--;
+        log('${value.tick}');
+
+        countdown = 30 - value.tick;
+        log('count down = $countdown');
+
         if (countdown == 0) {
           stopGame();
         }
       });
     });
-    initCard();
-    setState(() {
-      start = true;
-    });
   }
 
   stopGame() {
-    timer.cancel();
+    timer?.cancel();
+    timer = null;
+    countdown = 30;
+    log('stop game');
     setState(() {
       for (int i = 0; i < total; i++) {
         cardsFlipable[i] = false;
       }
     });
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Your score'),
+          content: Text('${(score)}'),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StartPage(),
+                    ));
+              },
+              child: const Text('Ok'),
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Align(
-        alignment: Alignment.topCenter,
+          child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Visibility(
-              visible: start,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Score = $score',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-            ),
             Visibility(
               visible: (start),
               child: Padding(
@@ -166,7 +183,6 @@ class _HomePageState extends State<HomePage> {
                       //
                       if ((isFront == false)) {
                         log('card =  ${cards[index]}');
-
                         // if toggle = false is a fist click, assign first value
                         if (isFront == false) {
                           if (toggle == false) {
@@ -213,15 +229,6 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            Visibility(
-              visible: !start,
-              child: FilledButton(
-                onPressed: () {
-                  startGame();
-                },
-                child: Text('Start!'),
-              ),
-            )
           ],
         ),
       )),
