@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     back: Container(
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
