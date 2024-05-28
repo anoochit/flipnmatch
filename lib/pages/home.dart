@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   int matchCount = 0;
 
-  int countdown = 0;
+  int countdown = 30;
 
   int score = 0;
 
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         log('${value.tick}');
 
-        countdown = 30 - value.tick;
+        countdown--;
         log('count down = $countdown');
 
         if (countdown == 0) {
@@ -96,7 +96,6 @@ class _HomePageState extends State<HomePage> {
   stopGame() {
     timer?.cancel();
     timer = null;
-    countdown = 30;
     log('stop game');
     setState(() {
       for (int i = 0; i < total; i++) {
@@ -109,8 +108,11 @@ class _HomePageState extends State<HomePage> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Your score'),
-          content: Text('${(score)}'),
+          title: Center(child: const Text('Your score')),
+          content: Container(
+              height: 100,
+              child: Center(child: Text('${(score + countdown) * 10}'))),
+          contentTextStyle: Theme.of(context).textTheme.displayLarge!,
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             FilledButton(
