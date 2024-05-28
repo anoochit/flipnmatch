@@ -183,47 +183,46 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onFlipDone: (isFront) {
                       //
-                      if ((isFront == false)) {
-                        log('card =  ${cards[index]}');
-                        // if toggle = false is a fist click, assign first value
-                        if (isFront == false) {
-                          if (toggle == false) {
-                            log('assign value');
-                            tapVal = cards[index];
-                            tapValIndex = index;
-                            toggle = true;
-                          } else {
-                            // if toggle is true, check match
-                            log('check');
-                            if (cards[tapValIndex!] == cards[index]) {
-                              log('match');
-                              setState(() {
-                                match = true;
-                                cardsFlipable[index] = false;
-                                cardsFlipable[tapValIndex!] = false;
-                                score++;
-                                matchCount++;
-                                if (matchCount == (total / 2)) {
-                                  stopGame();
-                                }
-                              });
-                            } else {
-                              log('not match');
-                              log('first${cards[tapValIndex!]}');
-                              log('last${cards[index]}');
-                              Future.delayed(const Duration(milliseconds: 50))
-                                  .then((v) {
-                                cardControllers[tapValIndex!].toggleCard();
-                              });
-                              Future.delayed(const Duration(milliseconds: 50))
-                                  .then((v) {
-                                cardControllers[index].toggleCard();
-                              });
 
-                              match = false;
-                            }
-                            toggle = false;
+                      log('card =  ${cards[index]}');
+                      // if toggle = false is a fist click, assign first value
+                      if (isFront == false) {
+                        if (toggle == false) {
+                          log('assign value');
+                          tapVal = cards[index];
+                          tapValIndex = index;
+                          toggle = true;
+                        } else if ((toggle) && (tapValIndex != index)) {
+                          // if toggle is true, check match
+                          log('check');
+                          if (cards[tapValIndex!] == cards[index]) {
+                            log('match');
+                            setState(() {
+                              match = true;
+                              cardsFlipable[index] = false;
+                              cardsFlipable[tapValIndex!] = false;
+                              score++;
+                              matchCount++;
+                              if (matchCount == (total / 2)) {
+                                stopGame();
+                              }
+                            });
+                          } else {
+                            log('not match');
+                            log('first${cards[tapValIndex!]}');
+                            log('last${cards[index]}');
+                            Future.delayed(const Duration(milliseconds: 50))
+                                .then((v) {
+                              cardControllers[tapValIndex!].toggleCard();
+                            });
+                            Future.delayed(const Duration(milliseconds: 50))
+                                .then((v) {
+                              cardControllers[index].toggleCard();
+                            });
+
+                            match = false;
                           }
+                          toggle = false;
                         }
                       }
                     },
