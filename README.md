@@ -4,5 +4,5 @@ Flip and Match, find and match image game, made with Flutter.
 
 ## Screenshots
 
-| ![](/screenshots/Screenshot01.png) | ![](/screenshots/Screenshot02.png) | ![](/screenshots/Screenshot03.png) |
-| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| ![](/screenshots/screenshot1.png) | ![](/screenshots/screenshot2.png) | ![](/screenshots/screenshot3.png) |
+| --------------------------------- | --------------------------------- | --------------------------------- |
