@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   List<FlipCardController> cardControllers = [];
 
   List<String> cards = [];
+
   List<bool> cardsFlipable = [];
 
   List<String> chars = [
@@ -25,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int total = 0;
-
   String? tapVal;
   int? tapValIndex;
   bool toggle = false;
@@ -33,9 +33,7 @@ class _HomePageState extends State<HomePage> {
   bool start = true;
 
   int matchCount = 0;
-
   int countdown = 30;
-
   int score = 0;
 
   Timer? timer;
@@ -108,8 +106,8 @@ class _HomePageState extends State<HomePage> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: const Text('Your score')),
-          content: Container(
+          title: const Center(child: Text('Your score')),
+          content: SizedBox(
               height: 100,
               child: Center(child: Text('${(score + countdown) * 10}'))),
           contentTextStyle: Theme.of(context).textTheme.displayLarge!,
