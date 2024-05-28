@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
+import 'package:confetti/confetti.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,8 @@ class _HomePageState extends State<HomePage> {
   bool match = false;
   bool start = false;
 
+  int matchCount = 0;
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +45,7 @@ class _HomePageState extends State<HomePage> {
 
   initCard() {
     // init list size
-    total = (chars.length) * 8;
+    total = (chars.length) * 4;
     // fill with default value
     cards.clear();
     cardsFlipable.clear();
@@ -57,16 +62,42 @@ class _HomePageState extends State<HomePage> {
     // init card controller
     cardControllers.clear();
     List.generate(total, (i) => cardControllers.add(FlipCardController()));
-    // init toggle
+    // init
     toggle = false;
     match = false;
     tapVal = null;
     tapValIndex = null;
+    score = 0;
+    countdown = 30;
+    matchCount = 0;
   }
 
+  late Timer timer;
+  late int countdown;
+
+  int score = 0;
+
   startGame() {
+    timer = Timer.periodic(const Duration(seconds: 1), (value) {
+      setState(() {
+        countdown--;
+        if (countdown == 0) {
+          stopGame();
+        }
+      });
+    });
+    initCard();
     setState(() {
       start = true;
+    });
+  }
+
+  stopGame() {
+    timer.cancel();
+    setState(() {
+      for (int i = 0; i < total; i++) {
+        cardsFlipable[i] = false;
+      }
     });
   }
 
@@ -74,10 +105,31 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Center(
+          child: Align(
+        alignment: Alignment.topCenter,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Visibility(
+              visible: start,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Score = $score',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: (start),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Time left $countdown sec',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            ),
             Visibility(
               visible: start,
               child: GridView.builder(
@@ -85,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(4.0),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 3,
                   mainAxisSpacing: 4.0,
                   crossAxisSpacing: 4.0,
                 ),
@@ -131,6 +183,11 @@ class _HomePageState extends State<HomePage> {
                                 match = true;
                                 cardsFlipable[index] = false;
                                 cardsFlipable[tapValIndex!] = false;
+                                score++;
+                                matchCount++;
+                                if (matchCount == (total / 2)) {
+                                  stopGame();
+                                }
                               });
                             } else {
                               log('not match');
@@ -162,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   startGame();
                 },
-                child: const Text('Start!'),
+                child: Text('Start!'),
               ),
             )
           ],
