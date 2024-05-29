@@ -6,7 +6,10 @@ import 'package:flipnmatch/pages/start.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.column, required this.multiply});
+
+  final int column;
+  final int multiply;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,7 +28,13 @@ class _HomePageState extends State<HomePage> {
     'assets/images/google.png'
   ];
 
+  // total    12    16    30    36
+  // size     3x4   4x4   5x6   6x6
+  // multipy  4     8    10      12
+
   int total = 0;
+  int column = 3;
+  int multipy = 4;
   String? tapVal;
   int? tapValIndex;
   bool toggle = false;
@@ -42,14 +51,18 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // init card
+
     initCard();
     startGame();
   }
 
   initCard() {
     log('init card');
+    // init size
+    column = widget.column;
+    multipy = widget.multiply;
     // init list size
-    total = (chars.length) * 4;
+    total = (chars.length) * multipy;
     // fill with default value
     cards.clear();
     cardsFlipable.clear();
@@ -153,8 +166,8 @@ class _HomePageState extends State<HomePage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(4.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: column,
                   mainAxisSpacing: 4.0,
                   crossAxisSpacing: 4.0,
                 ),

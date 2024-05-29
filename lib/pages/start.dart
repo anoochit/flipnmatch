@@ -9,17 +9,54 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FilledButton(
-          // Handles button press and navigates to HomePage
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          },
-          child: const Text('Start new Game'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(column: 3, multiply: 4),
+                  ),
+                );
+              },
+              child: const Text('Easy'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(column: 4, multiply: 8),
+                  ),
+                );
+              },
+              child: const Text('Normal'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(column: 5, multiply: 10),
+                  ),
+                );
+              },
+              child: const Text('Hard'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(column: 6, multiply: 12),
+                  ),
+                );
+              },
+              child: const Text('Very Hard'),
+            ),
+          ],
         ),
       ),
     );
