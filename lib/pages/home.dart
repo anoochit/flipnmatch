@@ -128,7 +128,8 @@ class _HomePageState extends State<HomePage> {
           title: const Center(child: Text('Your score')),
           content: SizedBox(
               height: 100,
-              child: Center(child: Text('${(score + countdown) * 10}'))),
+              child:
+                  Center(child: Text('${((score * 10) + (countdown * 10))}'))),
           contentTextStyle: Theme.of(context).textTheme.displayLarge!,
           actionsAlignment: MainAxisAlignment.center,
           actions: [
