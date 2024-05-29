@@ -99,4 +99,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          files: build/linux/x64/release/bundle/winapp-linux.zip
+          files: build/linux/x64/release/bundle/flipnmatch-linux.zip
