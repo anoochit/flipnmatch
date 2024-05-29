@@ -63,6 +63,12 @@ class _HomePageState extends State<HomePage> {
     multipy = widget.multiply;
     // init list size
     total = (chars.length) * multipy;
+    // set time out
+    if (total > 16) {
+      countdown = 45;
+    } else {
+      countdown = 30;
+    }
     // fill with default value
     cards.clear();
     cardsFlipable.clear();
