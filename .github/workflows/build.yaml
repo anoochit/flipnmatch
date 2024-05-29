@@ -25,6 +25,7 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.STORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+
       # Decoding base64 key into a file
       - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
 
@@ -35,6 +36,8 @@ jobs:
 
       # build apk
       - run: flutter build apk --split-per-abi
+
+      # push to releases
       - name: Push to Releases
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
