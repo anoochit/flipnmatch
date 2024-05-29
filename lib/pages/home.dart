@@ -135,6 +135,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             FilledButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
