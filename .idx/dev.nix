@@ -1,4 +1,4 @@
-{pkgs}: {
+{ pkgs }: {
   channel = "stable-23.11";
   packages = [
     pkgs.nodePackages.firebase-tools
@@ -6,7 +6,8 @@
     pkgs.unzip
   ];
   idx.extensions = [
-    
+    "Dart-Code.flutter"
+    "Dart-Code.dart-code"
   ];
   idx.previews = {
     previews = {
