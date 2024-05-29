@@ -127,28 +127,28 @@ jobs:
         with:
           files: build/linux/x64/release/bundle/flipnmatch-linux.zip
 
-  build-macos:
-    name: Build & Release macOS
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-      - run: dart fix --apply
-      - run: flutter pub get
-      - name: Build artifacts
-        run: flutter build macos
-      - name: Archive Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: "zip"
-          filename: flipnmatch-macos.zip
-          directory: build/macos/Build/Products/Release
-      - name: macOS Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GITHUB_TOKEN: ${{secrets.TOKEN}}
-        with:
-          files: build/macos/Build/Products/Release/flipnmatch-macos.zip
+  # build-macos:
+  #   name: Build & Release macOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable"
+  #     - run: dart fix --apply
+  #     - run: flutter pub get
+  #     - name: Build artifacts
+  #       run: flutter build macos
+  #     - name: Archive Release
+  #       uses: thedoctor0/zip-release@master
+  #       with:
+  #         type: "zip"
+  #         filename: flipnmatch-macos.zip
+  #         directory: build/macos/Build/Products/Release
+  #     - name: macOS Release
+  #       uses: softprops/action-gh-release@v1
+  #       if: startsWith(github.ref, 'refs/tags/v')
+  #       env:
+  #         GITHUB_TOKEN: ${{secrets.TOKEN}}
+  #       with:
+  #         files: build/macos/Build/Products/Release/flipnmatch-macos.zip
